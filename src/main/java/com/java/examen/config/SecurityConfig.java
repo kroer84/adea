@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -15,9 +16,16 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
-				.csrf(csrf -> csrf.disable())
+				.csrf(csrf -> csrf
+					.ignoringRequestMatchers("/h2-console/**")
+					.disable())
+				// 2. Permitir marcos (iframes) para que cargue la interfaz de H2
+				.headers(headers -> headers
+					.frameOptions(frameOptions -> frameOptions.sameOrigin())
+				)
 				.cors(cors -> {})
 				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/h2-console/**").permitAll()
 						.requestMatchers("/auth/**").permitAll()
 						.anyRequest().permitAll())
 				.build();
