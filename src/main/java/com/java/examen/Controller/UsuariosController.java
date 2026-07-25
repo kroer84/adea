@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.java.examen.DTO.UsuarioResponseDTO;
 import com.java.examen.Service.UsuariosService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
@@ -27,6 +28,11 @@ public class UsuariosController {
     public ResponseEntity<List<UsuarioResponseDTO>> listarTodos(){
         return ResponseEntity.ok(service.listarTodos());
     }
+
+    	@GetMapping("/{login}")
+	public ResponseEntity<UsuarioResponseDTO> buscarPorLogin(@PathVariable String login) {
+		return ResponseEntity.ok(service.buscarPorLogin(login));
+	}
     
     
 }

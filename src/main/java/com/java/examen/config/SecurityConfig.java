@@ -20,9 +20,7 @@ public class SecurityConfig {
 					.ignoringRequestMatchers("/h2-console/**")
 					.disable())
 				// 2. Permitir marcos (iframes) para que cargue la interfaz de H2
-				.headers(headers -> headers
-					.frameOptions(frameOptions -> frameOptions.sameOrigin())
-				)
+				.headers(headers -> headers.frameOptions(frame -> frame.disable()))
 				.cors(cors -> {})
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/h2-console/**").permitAll()

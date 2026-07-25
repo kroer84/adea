@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.java.examen.DTO.UsuarioResponseDTO;
 import com.java.examen.dao.IUsuarioDao;
+import com.java.examen.dominio.Usuario;
+import com.java.examen.exception.RecursoNoEncontradoException;
 
 @Service
 public class UsuariosService {
@@ -25,5 +27,12 @@ public class UsuariosService {
 				.map(u -> mapper.map(u, UsuarioResponseDTO.class))
 				.collect(Collectors.toList());
 	}
+
+    	public UsuarioResponseDTO buscarPorLogin(String login) {
+		Usuario usuario = dao.findByLogin(login)
+				.orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + login));
+		return mapper.map(usuario, UsuarioResponseDTO.class);
+	}
+    
     
 }
