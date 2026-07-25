@@ -1,9 +1,13 @@
 package com.java.examen.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.java.examen.DTO.TableroResponseDTO;
+import com.java.examen.DTO.UsuarioResponseDTO;
 import com.java.examen.dao.IUsuarioDao;
 
 @Service
@@ -29,6 +33,12 @@ public class TableroService {
 		tablero.setRevocados(revocados);
 		tablero.setTotal(total);
 		return tablero;
+	}
+
+    public List<UsuarioResponseDTO> buscarPorStatus(String status) {
+		return dao.findByStatusIgnoreCase(status).stream()
+				.map(u -> mapper.map(u, UsuarioResponseDTO.class))
+				.collect(Collectors.toList());
 	}
     
 }

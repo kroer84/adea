@@ -1,12 +1,16 @@
 package com.java.examen.Controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.java.examen.DTO.TableroResponseDTO;
+import com.java.examen.DTO.UsuarioResponseDTO;
 import com.java.examen.Service.TableroService;
 
 @RestController
@@ -25,5 +29,9 @@ public class DashboardController {
 		return ResponseEntity.ok(service.obtenerTablero());
 	}
     
+    @GetMapping("/status/{status}")
+	public ResponseEntity<List<UsuarioResponseDTO>> buscarPorStatus(@PathVariable String status) {
+		return ResponseEntity.ok(service.buscarPorStatus(status));
+	}
 
 }
