@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.java.examen.DTO.UsuarioRequestDTO;
 import com.java.examen.DTO.UsuarioResponseDTO;
@@ -32,7 +35,7 @@ public class UsuariosService {
 				.collect(Collectors.toList());
 	}
 
-    	public UsuarioResponseDTO buscarPorLogin(String login) {
+    public UsuarioResponseDTO buscarPorLogin(String login) {
 		Usuario usuario = dao.findByLogin(login)
 				.orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + login));
 		return mapper.map(usuario, UsuarioResponseDTO.class);
@@ -75,8 +78,18 @@ public class UsuariosService {
 		}
 
 		Usuario actualizado = dao.save(usuario);
-		
+
 		return mapper.map(actualizado, UsuarioResponseDTO.class);
+	}
+
+	public void eliminar(String login) {
+		Usuario usuario = dao.findByLogin(login)
+				.orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + login));
+
+		usuario.setStatus("B");
+		usuario.setFechaBaja(LocalDate.now());
+		usuario.setFechaModificacion(LocalDate.now());
+		dao.save(usuario);
 	}
     
 }

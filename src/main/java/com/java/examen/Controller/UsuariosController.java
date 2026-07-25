@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,5 +51,11 @@ public class UsuariosController {
     @PutMapping("/{login}")
 	public ResponseEntity<UsuarioResponseDTO> editar(@PathVariable String login, @Valid @RequestBody UsuarioRequestDTO dto) {
 		return ResponseEntity.ok(service.editar(login, dto));
+	}
+
+    @DeleteMapping("/{login}")
+	public ResponseEntity<Void> eliminar(@PathVariable String login) {
+		service.eliminar(login);
+		return ResponseEntity.noContent().build();
 	}
 }
