@@ -40,5 +40,28 @@ public class TableroService {
 				.map(u -> mapper.map(u, UsuarioResponseDTO.class))
 				.collect(Collectors.toList());
 	}
+
+    public List<UsuarioResponseDTO> buscarPorNombre(String nombre) {
+		return dao.findByNombreContainingIgnoreCase(nombre).stream()
+				.map(u -> mapper.map(u, UsuarioResponseDTO.class))
+				.collect(Collectors.toList());
+	}
+
+	public List<UsuarioResponseDTO> buscarPorApellidoPaterno(String apellidoPaterno) {
+		return dao.findByApellidoPaternoContainingIgnoreCase(apellidoPaterno).stream()
+				.map(u -> mapper.map(u, UsuarioResponseDTO.class))
+				.collect(Collectors.toList());
+	}
+
+	public List<UsuarioResponseDTO> buscarPorEmail(String email) {
+		return dao.findByEmailContainingIgnoreCase(email).stream()
+				.map(u -> mapper.map(u, UsuarioResponseDTO.class))
+				.collect(Collectors.toList());
+	}
     
+    public List<UsuarioResponseDTO> listarTodos() {
+		return dao.findAll().stream()
+				.map(u -> mapper.map(u, UsuarioResponseDTO.class))
+				.collect(Collectors.toList());
+	}
 }
