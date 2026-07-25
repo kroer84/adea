@@ -54,5 +54,29 @@ public class UsuariosService {
 		
 		return mapper.map(guardado, UsuarioResponseDTO.class);
 	}
+
+	public UsuarioResponseDTO editar(String login, UsuarioRequestDTO dto){
+
+		Usuario usuario = dao.findByLogin(login)
+		.orElseThrow(()-> new RecursoNoEncontradoException("Usuario no encontrado" + login));
+
+		usuario.setNombre(dto.getNombre());
+		usuario.setCliente(dto.getCliente());
+		usuario.setEmail(dto.getEmail());
+		usuario.setStatus(dto.getStatus());
+		usuario.setFechaVigencia(dto.getFechaVigencia());
+		usuario.setApellidoPaterno(dto.getApellidoPaterno());
+		usuario.setApellidoMaterno(dto.getApellidoMaterno());
+		usuario.setArea(dto.getArea());
+		usuario.setFechaModificacion(LocalDate.now());
+
+		if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+			usuario.setPassword(SHAUtil.encriptar(dto.getPassword()));
+		}
+
+		Usuario actualizado = dao.save(usuario);
+		
+		return mapper.map(actualizado, UsuarioResponseDTO.class);
+	}
     
 }

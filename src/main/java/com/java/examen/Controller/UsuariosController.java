@@ -17,6 +17,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -36,14 +37,18 @@ public class UsuariosController {
         return ResponseEntity.ok(service.listarTodos());
     }
 
-    	@GetMapping("/{login}")
+    @GetMapping("/{login}")
 	public ResponseEntity<UsuarioResponseDTO> buscarPorLogin(@PathVariable String login) {
 		return ResponseEntity.ok(service.buscarPorLogin(login));
 	}
     
-    	@PostMapping
+    @PostMapping
 	public ResponseEntity<UsuarioResponseDTO> guardar(@Valid @RequestBody UsuarioRequestDTO dto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.guardar(dto));
 	}
     
+    @PutMapping("/{login}")
+	public ResponseEntity<UsuarioResponseDTO> editar(@PathVariable String login, @Valid @RequestBody UsuarioRequestDTO dto) {
+		return ResponseEntity.ok(service.editar(login, dto));
+	}
 }
